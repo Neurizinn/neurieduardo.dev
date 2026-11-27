@@ -32,6 +32,8 @@ type Content struct {
 	Experience     []Entry   `json:"experience"`
 	Stack          []Entry   `json:"stack"`
 	AI             string    `json:"ai"`
+	AITags         []string  `json:"ai_tags"`
+	AITools        []string  `json:"ai_tools"`
 	Education      string    `json:"education"`
 	Contact        string    `json:"contact"`
 	Articles       []Article `json:"-"`

@@ -3,126 +3,213 @@ package pages
 import "portfolio/internal/site"
 
 templ Page(c site.Content, kind string, project *site.Project, prefix string, base string, route string) {
-<!doctype html>
-<html lang={ htmlLocale(c.Locale) }><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="color-scheme" content="dark light"/><title>Neuri Eduardo de Lima — Portfolio</title><meta name="description" content={ c.Intro }/>
-if base == "" {
-<meta name="robots" content="noindex"/>
-} else {
-<link rel="canonical" href={ base + route }/><link rel="alternate" hreflang="pt-BR" href={ base + equivalentRoute(route,"pt") }/><link rel="alternate" hreflang="en-US" href={ base + equivalentRoute(route,"en") }/><meta property="og:type" content="website"/><meta property="og:title" content="Neuri Eduardo de Lima — Portfolio"/><meta property="og:description" content={ c.Intro }/><meta property="og:url" content={ base + route }/><meta name="twitter:card" content="summary"/>
-}
-<link rel="icon" href="/favicon.svg" type="image/svg+xml"/><link rel="stylesheet" href="/assets/tailwind.css"/><link rel="stylesheet" href="/assets/fonts.css"/><link rel="stylesheet" href="/assets/site.css"/><script defer src="/assets/site.js"></script>
-if base != "" && len(c.Articles) > 0 {
-<link rel="alternate" type="application/rss+xml" title="Blog RSS" href={ base + prefix + "/feed.xml" }/>
-}
-</head>
-<body><div id="portfolio"><div class="wrap">
-<header><nav aria-label="Primary navigation"><a class="logo" href={ prefix + "/" }><span>&lt;</span>neuri<span>/&gt;</span></a><div class="links"><a href={ prefix + "/#about-n" }>{ nav(c.Locale,"About","Sobre") }</a><a href={ prefix + "/#projects-n" }>{ nav(c.Locale,"Projects","Projetos") }</a><a href={ prefix + "/#experience-n" }>{ nav(c.Locale,"Experience","Experiência") }</a><a href={ prefix + "/#contact-n" }>{ nav(c.Locale,"Contact","Contato") }</a><a href={ equivalentRoute(route,otherLocale(c.Locale)) } lang={ htmlLocale(otherLocale(c.Locale)) }>{ otherLocale(c.Locale) }</a><button type="button" id="palette-open" aria-label={ nav(c.Locale,"Open navigation search","Abrir busca de navegação") }>⌘K</button><button type="button" id="theme" aria-label={ nav(c.Locale,"Toggle theme","Alternar tema") }>◐</button></div></nav></header>
-<dialog id="palette" aria-label={ nav(c.Locale,"Navigation search","Busca de navegação") }><div class="palette-head"><input id="palette-search" type="search" autocomplete="off" placeholder={ nav(c.Locale,"Search pages…","Buscar páginas…") } aria-label={ nav(c.Locale,"Search pages","Buscar páginas") }/><button type="button" id="palette-close" aria-label={ nav(c.Locale,"Close search","Fechar busca") }>×</button></div><div class="palette-list"><a href={ prefix + "/" }>{ nav(c.Locale,"Home","Início") }</a><a href={ prefix + "/about/" }>{ nav(c.Locale,"About","Sobre") }</a><a href={ prefix + "/projects/" }>{ nav(c.Locale,"Projects","Projetos") }</a><a href={ prefix + "/experience/" }>{ nav(c.Locale,"Experience","Experiência") }</a><a href={ prefix + "/stack/" }>Stack</a><a href={ prefix + "/ai-engineering/" }>AI Engineering</a><a href={ prefix + "/contact/" }>{ nav(c.Locale,"Contact","Contato") }</a><a href={ prefix + "/resume/" }>{ nav(c.Locale,"Resume","Currículo") }</a><a href={ prefix + "/blog/" }>Blog</a></div></dialog>
-<main>
-if kind == "home" {
- <section class="hero" id="home-n"><div class="eyebrow">Software engineering / Brazil</div><h1>Neuri Eduardo<br/>de Lima<span class="accent">.</span></h1><div class="role">Software Engineer &amp;<br/>Full Stack Developer.</div><p class="intro">{ c.Intro }</p><div class="actions"><a class="btn primary" href="#projects-n">{ nav(c.Locale,"Explore projects ↗","Explorar projetos ↗") }</a><a class="btn" href="https://www.linkedin.com/in/neuri-eduardo-dev/" rel="noopener noreferrer">LinkedIn ↗</a></div><p class="location">◎ Irati, Paraná — Brasil</p></section>
- <div class="stackline"><span>TypeScript</span><span>Go</span><span>Python</span><span>Node.js</span><span>React</span><span>Kafka</span><span>Docker</span></div>
- <section class="section" id="about-n"><div class="eyebrow">01 / About me</div><h2>{ nav(c.Locale,"Engineering beyond code.","Engenharia além do código.") }</h2><p>{ c.About }</p><div class="grid aboutgrid"><div class="card"><div class="symbol">&lt;/&gt;</div><h3>Software Engineering</h3><p>Full Stack, REST APIs, Clean Architecture, SOLID, System Design.</p></div><div class="card"><div class="symbol">⌘</div><h3>Distributed Systems</h3><p>Microservices, messaging, asynchronous processing.</p></div><div class="card"><div class="symbol">✳</div><h3>AI Engineering</h3><p>AI Agents, RAG, MCP, LLM Integration.</p></div><div class="card"><div class="symbol">▱</div><h3>DevOps &amp; Infrastructure</h3><p>Docker, CI/CD, Linux, Nginx.</p></div></div></section>
- <section class="section" id="projects-n"><div class="eyebrow">02 / Selected work</div><h2>{ nav(c.Locale,"Selected projects.","Projetos selecionados.") }</h2><div class="grid">
- for i,p := range c.Projects {
- @ProjectCard(p,prefix,i)
- }
- </div></section>
- <section class="section" id="experience-n"><div class="eyebrow">03 / Career</div><h2>{ nav(c.Locale,"Professional experience.","Experiência profissional.") }</h2>
- for _,e := range c.Experience {
- @Experience(e)
- }
- </section>
- <section class="section" id="stack-n"><div class="eyebrow">04 / Technical expertise</div><h2>{ nav(c.Locale,"My stack.","Minha stack.") }</h2><div class="techgrid">
- for _,e := range c.Stack {
- <div class="tech"><strong>{ e.Title }</strong><p>{ e.Description }</p></div>
- }
- </div></section>
- <section class="section" id="ai-n"><div class="eyebrow">05 / AI Engineering</div><h2>Building with intelligence.</h2><div class="card"><div class="symbol">✳</div><h3>AI Engineering &amp; Agentic Development</h3><p>{ c.AI }</p></div></section>
- <section class="section" id="education-n"><div class="eyebrow">06 / Education</div><h2>{ nav(c.Locale,"Education.","Formação acadêmica.") }</h2><div class="experience"><div class="date">02/22 — 12/25</div><div><h3>{ nav(c.Locale,"Software Engineering","Engenharia de Software") }</h3><div class="company">Centro Universitário Campo Real</div><p>{ c.Education }</p></div></div></section>
- <section class="contact" id="contact-n"><div class="eyebrow">07 / Get in touch</div><h2>Let's build<br/>something great<span class="accent">.</span></h2><p>{ c.Contact }</p><div class="actions"><a class="btn primary" href="mailto:neuridelima1@gmail.com">{ nav(c.Locale,"Email me ↗","Enviar e-mail ↗") }</a><a class="btn" href="https://www.linkedin.com/in/neuri-eduardo-dev/" rel="noopener noreferrer">LinkedIn ↗</a></div></section>
-}
-if kind != "home" {
- <section class="subpage"><a class="back" href={ prefix + "/" }>← { nav(c.Locale,"Home","Início") }</a>
- if project != nil {
- <div class="eyebrow">{ nav(c.Locale,"Project case","Estudo de caso") }</div><h1>{ project.Name }</h1><p class="intro">{ project.Description }</p><div class="diagram">
- for i,d := range project.Diagram {
- if i > 0 {
- <b>↔</b>
- }
- <span>{ d }</span>
- }
- </div><p>{ project.Detail }</p><div class="tags">
- for _,tag := range project.Tags {
- <span class="tag">{ tag }</span>
- }
- </div>
- } else if kind == "projects" {
- <div class="eyebrow">Selected work</div><h1>{ nav(c.Locale,"Projects","Projetos") }</h1><div class="grid">
- for i,p := range c.Projects {
- @ProjectCard(p,prefix,i)
- }
- </div>
- } else if kind == "experience" {
- <div class="eyebrow">Career</div><h1>{ nav(c.Locale,"Experience","Experiência") }</h1>
- for _,e := range c.Experience {
- @Experience(e)
- }
- } else if kind == "stack" {
- <div class="eyebrow">Technical expertise</div><h1>Stack</h1><div class="techgrid">
- for _,e := range c.Stack {
- <div class="tech"><strong>{ e.Title }</strong><p>{ e.Description }</p></div>
- }
- </div>
- } else if kind == "ai-engineering" {
- <div class="eyebrow">AI Engineering</div><h1>AI Engineering</h1><p class="intro">{ c.AI }</p>
- } else if kind == "contact" {
- <div class="eyebrow">Get in touch</div><h1>{ nav(c.Locale,"Contact","Contato") }</h1><p>{ c.Contact }</p><div class="actions"><a class="btn primary" href="mailto:neuridelima1@gmail.com">Email ↗</a><a class="btn" href="https://www.linkedin.com/in/neuri-eduardo-dev/">LinkedIn ↗</a></div>
- } else if kind == "about" {
- <div class="eyebrow">About me</div><h1>{ nav(c.Locale,"About","Sobre") }</h1><p class="intro">{ c.About }</p>
- } else if kind == "resume" {
- <div class="eyebrow">Resume</div><h1>{ nav(c.Locale,"Resume","Currículo") }</h1>
- if c.ResumeURL == "" {
- <p>{ nav(c.Locale,"A public resume has not been approved for download yet.","Ainda não há currículo público aprovado para download.") }</p>
- } else {
- <p>{ nav(c.Locale,"Download the reviewed public resume.","Baixe o currículo público revisado.") }</p><a class="btn primary" href={ c.ResumeURL } download>{ nav(c.Locale,"Download PDF","Baixar PDF") }</a>
- }
- } else if kind == "blog" {
- <div class="eyebrow">Blog</div><h1>Blog</h1>
- if len(c.Articles) == 0 {
- <p>{ nav(c.Locale,"No approved articles yet.","Ainda não há artigos aprovados.") }</p>
- } else {
- <div class="article-list">
- for _,a := range c.Articles {
- <a href={ prefix + "/blog/" + a.Slug + "/" }><time>{ a.Date }</time><strong>{ a.Title }</strong></a>
- }
- </div>
- }
- } else if kind == "article" {
- <div class="eyebrow">Blog / { c.CurrentArticle.Date }</div><h1>{ c.CurrentArticle.Title }</h1><article class="article-body">
- @templ.Raw(c.CurrentArticle.HTML)
- </article>
- }
- </section>
-}
-</main><footer><span>© 2026 Neuri Eduardo de Lima</span><div class="footerlinks"><a href={ prefix + "/about/" }>About</a><a href={ prefix + "/projects/" }>Projects</a><a href={ prefix + "/stack/" }>Stack</a><a href={ prefix + "/blog/" }>Blog</a><a href={ prefix + "/resume/" }>Resume</a></div></footer>
-</div></div></body></html>
+	<!DOCTYPE html>
+	<html lang={ htmlLocale(c.Locale) }>
+		<head>
+			<meta charset="utf-8"/>
+			<meta name="viewport" content="width=device-width,initial-scale=1"/>
+			<meta name="color-scheme" content="dark light"/>
+			<title>{ pageTitle(c,kind,project) }</title>
+			<meta name="description" content={ pageDescription(c, kind, project) }/>
+			if base == "" {
+				<meta name="robots" content="noindex"/>
+			} else {
+				<link rel="canonical" href={ base + route }/>
+				<link rel="alternate" hreflang="pt-BR" href={ base + equivalentRoute(route, "pt") }/>
+				<link rel="alternate" hreflang="en-US" href={ base + equivalentRoute(route, "en") }/>
+				<meta property="og:type" content="website"/>
+				<meta property="og:title" content={ pageTitle(c, kind, project) }/>
+				<meta property="og:description" content={ pageDescription(c, kind, project) }/>
+				<meta property="og:url" content={ base + route }/>
+				<meta name="twitter:card" content="summary"/>
+				<meta name="twitter:title" content={ pageTitle(c, kind, project) }/>
+				<meta name="twitter:description" content={ pageDescription(c, kind, project) }/>
+			}
+			<link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+			<link rel="stylesheet" href="/assets/tailwind.css"/>
+			<link rel="stylesheet" href="/assets/fonts.css"/>
+			<link rel="stylesheet" href="/assets/site.css"/><script defer src="/assets/site.js"></script>
+			if base != "" && len(c.Articles) > 0 {
+				<link rel="alternate" type="application/rss+xml" title="Blog RSS" href={ base + prefix + "/feed.xml" }/>
+			}
+		</head>
+		<body>
+			<div id="portfolio">
+				<div class="wrap">
+					<header><nav aria-label="Primary navigation"><a class="logo" href={ prefix + "/" }><span>&lt;</span>neuri<span>/&gt;</span></a><div class="links"><a href={ navHref(kind, prefix, "about") } aria-current={ navCurrent(kind, "about") }>{ nav(c.Locale,"About","Sobre") }</a><a href={ navHref(kind, prefix, "projects") } aria-current={ navCurrent(kind, "projects") }>{ nav(c.Locale,"Projects","Projetos") }</a><a href={ navHref(kind, prefix, "experience") } aria-current={ navCurrent(kind, "experience") }>{ nav(c.Locale,"Experience","Experiência") }</a><a href={ navHref(kind, prefix, "contact") } aria-current={ navCurrent(kind, "contact") }>{ nav(c.Locale,"Contact","Contato") }</a><a href={ equivalentRoute(route, otherLocale(c.Locale)) } lang={ htmlLocale(otherLocale(c.Locale)) }>{ otherLocale(c.Locale) }</a><button type="button" id="palette-open" aria-label={ nav(c.Locale, "Open navigation search (⌘K)", "Abrir busca de navegação (⌘K)") }>⌘K</button><button type="button" id="theme" aria-label={ nav(c.Locale, "Toggle theme", "Alternar tema") }>◐</button></div></nav></header>
+					<dialog id="palette" aria-label={ nav(c.Locale, "Navigation search", "Busca de navegação") }><div class="palette-head"><input id="palette-search" type="search" autocomplete="off" placeholder={ nav(c.Locale, "Search pages…", "Buscar páginas…") } aria-label={ nav(c.Locale, "Search pages", "Buscar páginas") }/><button type="button" id="palette-close" aria-label={ nav(c.Locale, "Close search", "Fechar busca") }>×</button></div><div class="palette-list"><a href={ prefix + "/" }>{ nav(c.Locale,"Home","Início") }</a><a href={ prefix + "/about/" }>{ nav(c.Locale,"About","Sobre") }</a><a href={ prefix + "/projects/" }>{ nav(c.Locale,"Projects","Projetos") }</a><a href={ prefix + "/experience/" }>{ nav(c.Locale,"Experience","Experiência") }</a><a href={ prefix + "/stack/" }>Stack</a><a href={ prefix + "/ai-engineering/" }>AI Engineering</a><a href={ prefix + "/contact/" }>{ nav(c.Locale,"Contact","Contato") }</a><a href={ prefix + "/resume/" }>{ nav(c.Locale,"Resume","Currículo") }</a><a href={ prefix + "/blog/" }>Blog</a></div></dialog>
+					<main>
+						if kind == "home" {
+							<section class="hero" id="home-n"><div class="eyebrow">Software engineering / Brazil</div><h1>Neuri Eduardo<br/>de Lima<span class="accent">.</span></h1><div class="role">Software Engineer &amp;<br/>Full Stack Developer.</div><p class="intro">{ c.Intro }</p><div class="actions"><a class="btn primary" href="#projects-n">{ nav(c.Locale,"Explore projects ↗","Explorar projetos ↗") }</a><a class="btn" href="https://www.linkedin.com/in/neuri-eduardo-dev/" rel="noopener noreferrer">LinkedIn ↗</a></div><p class="location">◎ Irati, Paraná — Brasil</p></section>
+							<div class="stackline"><span>TypeScript</span><span>Go</span><span>Python</span><span>Node.js</span><span>React</span><span>Kafka</span><span>Docker</span></div>
+							<section class="section" id="about-n"><div class="eyebrow">01 / About me</div><h2>{ nav(c.Locale,"Engineering beyond code.","Engenharia além do código.") }</h2><p>{ c.About }</p><div class="grid aboutgrid"><div class="card"><div class="symbol">&lt;/&gt;</div><h3>Software Engineering</h3><p>Full Stack, REST APIs, Clean Architecture, SOLID, System Design.</p></div><div class="card"><div class="symbol">⌘</div><h3>Distributed Systems</h3><p>Microservices, messaging, asynchronous processing.</p></div><div class="card"><div class="symbol">✳</div><h3>AI Engineering</h3><p>AI Agents, RAG, MCP, LLM Integration.</p></div><div class="card"><div class="symbol">▱</div><h3>DevOps &amp; Infrastructure</h3><p>Docker, CI/CD, Linux, Nginx.</p></div></div></section>
+							<section class="section" id="projects-n">
+								<div class="eyebrow">02 / Selected work</div>
+								<h2>{ nav(c.Locale,"Selected projects.","Projetos selecionados.") }</h2>
+								<div class="grid">
+									for i,p := range c.Projects {
+										@ProjectCard(p, prefix, i)
+									}
+								</div>
+							</section>
+							<section class="section" id="experience-n">
+								<div class="eyebrow">03 / Career</div>
+								<h2>{ nav(c.Locale,"Professional experience.","Experiência profissional.") }</h2>
+								for _,e := range c.Experience {
+									@Experience(e)
+								}
+							</section>
+							<section class="section" id="stack-n">
+								<div class="eyebrow">04 / Technical expertise</div>
+								<h2>{ nav(c.Locale,"My stack.","Minha stack.") }</h2>
+								<div class="techgrid">
+									for _,e := range c.Stack {
+										<div class="tech"><strong>{ e.Title }</strong><p>{ e.Description }</p></div>
+									}
+								</div>
+							</section>
+							<section class="section" id="ai-n">
+								<div class="eyebrow">05 / AI Engineering</div>
+								<h2>Building with intelligence.</h2>
+								<div class="card">
+									<div class="symbol">✳</div>
+									<h3>AI Engineering &amp; Agentic Development</h3>
+									<p>{ c.AI }</p>
+									@AISkills(c)
+								</div>
+							</section>
+							<section class="section" id="education-n"><div class="eyebrow">06 / Education</div><h2>{ nav(c.Locale,"Education.","Formação acadêmica.") }</h2><div class="experience"><div class="date">{ nav(c.Locale,"Education","Formação") }</div><div><h3>{ nav(c.Locale,"Software Engineering","Engenharia de Software") }</h3><p>{ c.Education }</p></div></div></section>
+							<section class="contact" id="contact-n"><div class="eyebrow">07 / Get in touch</div><h2>Let's build<br/>something great<span class="accent">.</span></h2><p>{ c.Contact }</p><div class="actions"><a class="btn primary" href="mailto:neuridelima1@gmail.com">{ nav(c.Locale,"Email me ↗","Enviar e-mail ↗") }</a><a class="btn" href="https://www.linkedin.com/in/neuri-eduardo-dev/" rel="noopener noreferrer">LinkedIn ↗</a></div></section>
+						}
+						if kind != "home" {
+							<section class="subpage">
+								<a class="back" href={ prefix + "/" }>← { nav(c.Locale,"Home","Início") }</a>
+								if project != nil {
+									<div class="eyebrow">{ nav(c.Locale,"Project case","Estudo de caso") }</div>
+									<h1>{ project.Name }</h1>
+									<p class="intro">{ project.Description }</p>
+									<div class="diagram">
+										for i,d := range project.Diagram {
+											if i > 0 {
+												<b>↔</b>
+											}
+											<span>{ d }</span>
+										}
+									</div>
+									<p>{ project.Detail }</p>
+									<div class="tags">
+										for _,tag := range project.Tags {
+											<span class="tag">{ tag }</span>
+										}
+									</div>
+								} else if kind == "projects" {
+									<div class="eyebrow">Selected work</div>
+									<h1>{ nav(c.Locale,"Projects","Projetos") }</h1>
+									<div class="grid">
+										for i,p := range c.Projects {
+											@ProjectCard(p, prefix, i)
+										}
+									</div>
+								} else if kind == "experience" {
+									<div class="eyebrow">Career</div>
+									<h1>{ nav(c.Locale,"Experience","Experiência") }</h1>
+									for _,e := range c.Experience {
+										@Experience(e)
+									}
+								} else if kind == "stack" {
+									<div class="eyebrow">Technical expertise</div>
+									<h1>Stack</h1>
+									<div class="techgrid">
+										for _,e := range c.Stack {
+											<div class="tech"><strong>{ e.Title }</strong><p>{ e.Description }</p></div>
+										}
+									</div>
+								} else if kind == "ai-engineering" {
+									<div class="eyebrow">AI Engineering</div>
+									<h1>AI Engineering</h1>
+									<p class="intro">{ c.AI }</p>
+									@AISkills(c)
+								} else if kind == "contact" {
+									<div class="eyebrow">Get in touch</div>
+									<h1>{ nav(c.Locale,"Contact","Contato") }</h1>
+									<p>{ c.Contact }</p>
+									<div class="actions"><a class="btn primary" href="mailto:neuridelima1@gmail.com">Email ↗</a><a class="btn" href="https://www.linkedin.com/in/neuri-eduardo-dev/">LinkedIn ↗</a></div>
+								} else if kind == "about" {
+									<div class="eyebrow">About me</div>
+									<h1>{ nav(c.Locale,"About","Sobre") }</h1>
+									<p class="intro">{ c.About }</p>
+								} else if kind == "resume" {
+									<div class="eyebrow">Resume</div>
+									<h1>{ nav(c.Locale,"Resume","Currículo") }</h1>
+									if c.ResumeURL == "" {
+										<p>{ nav(c.Locale,"A public resume has not been approved for download yet.","Ainda não há currículo público aprovado para download.") }</p>
+									} else {
+										<p>{ nav(c.Locale,"Download the reviewed public resume.","Baixe o currículo público revisado.") }</p><a class="btn primary" href={ c.ResumeURL } download>{ nav(c.Locale,"Download PDF","Baixar PDF") }</a>
+									}
+								} else if kind == "blog" {
+									<div class="eyebrow">Blog</div>
+									<h1>Blog</h1>
+									if len(c.Articles) == 0 {
+										<p>{ nav(c.Locale,"No approved articles yet.","Ainda não há artigos aprovados.") }</p>
+									} else {
+										<div class="article-list">
+											for _,a := range c.Articles {
+												<a href={ prefix + "/blog/" + a.Slug + "/" }><time>{ a.Date }</time><strong>{ a.Title }</strong></a>
+											}
+										</div>
+									}
+								} else if kind == "article" {
+									<div class="eyebrow">Blog / { c.CurrentArticle.Date }</div>
+									<h1>{ c.CurrentArticle.Title }</h1>
+									<article class="article-body">
+										@templ.Raw(c.CurrentArticle.HTML)
+									</article>
+								}
+							</section>
+						}
+					</main>
+					<footer><span>© 2026 Neuri Eduardo de Lima</span><div class="footerlinks"><a href={ prefix + "/about/" }>About</a><a href={ prefix + "/projects/" }>Projects</a><a href={ prefix + "/stack/" }>Stack</a><a href={ prefix + "/blog/" }>Blog</a><a href={ prefix + "/resume/" }>Resume</a></div></footer>
+				</div>
+			</div>
+		</body>
+	</html>
 }
 
-templ ProjectCard(p site.Project,prefix string,i int) {
-<a class="card project" href={ prefix + "/projects/" + p.Slug + "/" }><div class="section-head"><div class="symbol">{ first(p.Name) }</div><span class="number">0{ i+1 } — PROJECT</span></div><h3>{ p.Name }</h3><p>{ p.Description }</p><div class="diagram">
-for j,d := range p.Diagram {
-if j > 0 {
-<b>↔</b>
+templ ProjectCard(p site.Project, prefix string, i int) {
+	<a class="card project" href={ prefix + "/projects/" + p.Slug + "/" }>
+		<div class="section-head"><div class="symbol">{ first(p.Name) }</div><span class="number">0{ i+1 } — PROJECT</span></div>
+		<h3>{ p.Name }</h3>
+		<p>{ p.Description }</p>
+		<div class="diagram">
+			for j,d := range p.Diagram {
+				if j > 0 {
+					<b>↔</b>
+				}
+				<span>{ d }</span>
+			}
+		</div>
+		<div class="tags">
+			for _,tag := range p.Tags {
+				<span class="tag">{ tag }</span>
+			}
+		</div>
+	</a>
 }
-<span>{ d }</span>
-}
-</div><div class="tags">
-for _,tag := range p.Tags {
-<span class="tag">{ tag }</span>
-}
-</div></a>
-}
+
 templ Experience(e site.Entry) {
-<div class="experience"><div class="date">{ e.Date }</div><div><h3>{ e.Title }</h3><div class="company">{ e.Organization }</div><p>{ e.Description }</p></div></div>
+	<div class="experience"><div class="date">{ e.Date }</div><div><h3>{ e.Title }</h3><div class="company">{ e.Organization }</div><p>{ e.Description }</p></div></div>
+}
+
+templ AISkills(c site.Content) {
+	<div class="tags">
+		for _,tag := range c.AITags {
+			<span class="tag">{ tag }</span>
+		}
+	</div>
+	<div class="ai-tools">
+		{ nav(c.Locale,"Tools","Ferramentas") } ·
+		for _,tool := range c.AITools {
+			<span>{ tool }</span>
+		}
+	</div>
 }
