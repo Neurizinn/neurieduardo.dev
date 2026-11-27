@@ -72,6 +72,8 @@ No Windows sem Make: `go mod download`, `npm ci`, `go run github.com/a-h/templ/c
 
 Sem `SITE_URL`, todas as páginas recebem `noindex` e `robots.txt` bloqueia indexação. Com uma origem HTTPS válida em `SITE_URL`, o build gera canonical, hreflang, Open Graph básico e sitemap. A configuração do domínio e a revisão do conteúdo devem ocorrer antes de qualquer deploy.
 
+Artigos aprovados podem ser adicionados em `content/pt/blog/` e `content/en/blog/` como arquivos `<slug>.md`. Cada arquivo começa com `---`, seguido de `slug:`, `title:`, `date:` (AAAA-MM-DD), `published: true` e outro `---`. Artigos publicados precisam existir nos dois idiomas com o mesmo slug e data; o HTML gerado é sanitizado. O RSS por idioma é gerado quando há artigos publicados e `SITE_URL` está configurada. Atualmente não há artigos aprovados.
+
 ## Conteúdo e rotas
 
 Português em `/`; inglês sob `/en/`. Rotas equivalentes: `/about/`, `/experience/`, `/projects/`, `/projects/fobras-next/`, `/projects/despesa360/`, `/projects/find-my-dev/`, `/projects/teleflow/`, `/ai-engineering/`, `/stack/`, `/resume/`, `/contact/`, `/blog/`. Artigos individuais são gerados apenas a partir de Markdown publicado. A home preserva todas as seções e âncoras da referência.
@@ -93,7 +95,7 @@ A pipeline deverá usar a CLI fixada e deploy prebuilt, sem entregar segredos ao
 - [ ] Identidade visual fiel e responsiva
 - [x] Home, projetos, experiência, stack, AI Engineering e formação
 - [ ] Páginas individuais, conteúdo bilíngue e tema
-- [ ] Blog Markdown e currículos públicos condicionais; busca de navegação já implementada
+- [ ] Currículos públicos condicionais; blog Markdown e busca de navegação implementados
 - [ ] SEO, sitemap, Open Graph, RSS e 404
 - [ ] Testes automatizados e QA visual
 - [x] CI local configurado e artefato Vercel prebuilt gerado; execução remota e preview pendentes

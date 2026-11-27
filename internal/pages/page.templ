@@ -8,11 +8,15 @@ templ Page(c site.Content, kind string, project *site.Project, prefix string, ba
 if base == "" {
 <meta name="robots" content="noindex"/>
 } else {
-<link rel="canonical" href={ base + route }/><link rel="alternate" hreflang="pt-BR" href={ base + localeRoute("pt",kind,project) }/><link rel="alternate" hreflang="en-US" href={ base + localeRoute("en",kind,project) }/><meta property="og:type" content="website"/><meta property="og:title" content="Neuri Eduardo de Lima — Portfolio"/><meta property="og:description" content={ c.Intro }/><meta property="og:url" content={ base + route }/><meta name="twitter:card" content="summary"/>
+<link rel="canonical" href={ base + route }/><link rel="alternate" hreflang="pt-BR" href={ base + equivalentRoute(route,"pt") }/><link rel="alternate" hreflang="en-US" href={ base + equivalentRoute(route,"en") }/><meta property="og:type" content="website"/><meta property="og:title" content="Neuri Eduardo de Lima — Portfolio"/><meta property="og:description" content={ c.Intro }/><meta property="og:url" content={ base + route }/><meta name="twitter:card" content="summary"/>
 }
-<link rel="icon" href="/favicon.svg" type="image/svg+xml"/><link rel="stylesheet" href="/assets/tailwind.css"/><link rel="stylesheet" href="/assets/site.css"/><script defer src="/assets/site.js"></script></head>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"/><link rel="stylesheet" href="/assets/tailwind.css"/><link rel="stylesheet" href="/assets/site.css"/><script defer src="/assets/site.js"></script>
+if base != "" && len(c.Articles) > 0 {
+<link rel="alternate" type="application/rss+xml" title="Blog RSS" href={ base + prefix + "/feed.xml" }/>
+}
+</head>
 <body><div id="portfolio"><div class="wrap">
-<header><nav aria-label="Primary navigation"><a class="logo" href={ prefix + "/" }><span>&lt;</span>neuri<span>/&gt;</span></a><div class="links"><a href={ prefix + "/#about-n" }>{ nav(c.Locale,"About","Sobre") }</a><a href={ prefix + "/#projects-n" }>{ nav(c.Locale,"Projects","Projetos") }</a><a href={ prefix + "/#experience-n" }>{ nav(c.Locale,"Experience","Experiência") }</a><a href={ prefix + "/#contact-n" }>{ nav(c.Locale,"Contact","Contato") }</a><a href={ localeLink(c.Locale,kind,project) } lang={ htmlLocale(otherLocale(c.Locale)) }>{ otherLocale(c.Locale) }</a><button type="button" id="palette-open" aria-label={ nav(c.Locale,"Open navigation search","Abrir busca de navegação") }>⌘K</button><button type="button" id="theme" aria-label={ nav(c.Locale,"Toggle theme","Alternar tema") }>◐</button></div></nav></header>
+<header><nav aria-label="Primary navigation"><a class="logo" href={ prefix + "/" }><span>&lt;</span>neuri<span>/&gt;</span></a><div class="links"><a href={ prefix + "/#about-n" }>{ nav(c.Locale,"About","Sobre") }</a><a href={ prefix + "/#projects-n" }>{ nav(c.Locale,"Projects","Projetos") }</a><a href={ prefix + "/#experience-n" }>{ nav(c.Locale,"Experience","Experiência") }</a><a href={ prefix + "/#contact-n" }>{ nav(c.Locale,"Contact","Contato") }</a><a href={ equivalentRoute(route,otherLocale(c.Locale)) } lang={ htmlLocale(otherLocale(c.Locale)) }>{ otherLocale(c.Locale) }</a><button type="button" id="palette-open" aria-label={ nav(c.Locale,"Open navigation search","Abrir busca de navegação") }>⌘K</button><button type="button" id="theme" aria-label={ nav(c.Locale,"Toggle theme","Alternar tema") }>◐</button></div></nav></header>
 <dialog id="palette" aria-label={ nav(c.Locale,"Navigation search","Busca de navegação") }><div class="palette-head"><input id="palette-search" type="search" autocomplete="off" placeholder={ nav(c.Locale,"Search pages…","Buscar páginas…") } aria-label={ nav(c.Locale,"Search pages","Buscar páginas") }/><button type="button" id="palette-close" aria-label={ nav(c.Locale,"Close search","Fechar busca") }>×</button></div><div class="palette-list"><a href={ prefix + "/" }>{ nav(c.Locale,"Home","Início") }</a><a href={ prefix + "/about/" }>{ nav(c.Locale,"About","Sobre") }</a><a href={ prefix + "/projects/" }>{ nav(c.Locale,"Projects","Projetos") }</a><a href={ prefix + "/experience/" }>{ nav(c.Locale,"Experience","Experiência") }</a><a href={ prefix + "/stack/" }>Stack</a><a href={ prefix + "/ai-engineering/" }>AI Engineering</a><a href={ prefix + "/contact/" }>{ nav(c.Locale,"Contact","Contato") }</a><a href={ prefix + "/resume/" }>{ nav(c.Locale,"Resume","Currículo") }</a><a href={ prefix + "/blog/" }>Blog</a></div></dialog>
 <main>
 if kind == "home" {
@@ -79,7 +83,20 @@ if kind != "home" {
  } else if kind == "resume" {
  <div class="eyebrow">Resume</div><h1>{ nav(c.Locale,"Resume","Currículo") }</h1><p>{ nav(c.Locale,"A public resume has not been approved for download yet.","Ainda não há currículo público aprovado para download.") }</p>
  } else if kind == "blog" {
- <div class="eyebrow">Blog</div><h1>Blog</h1><p>{ nav(c.Locale,"No approved articles yet.","Ainda não há artigos aprovados.") }</p>
+ <div class="eyebrow">Blog</div><h1>Blog</h1>
+ if len(c.Articles) == 0 {
+ <p>{ nav(c.Locale,"No approved articles yet.","Ainda não há artigos aprovados.") }</p>
+ } else {
+ <div class="article-list">
+ for _,a := range c.Articles {
+ <a href={ prefix + "/blog/" + a.Slug + "/" }><time>{ a.Date }</time><strong>{ a.Title }</strong></a>
+ }
+ </div>
+ }
+ } else if kind == "article" {
+ <div class="eyebrow">Blog / { c.CurrentArticle.Date }</div><h1>{ c.CurrentArticle.Title }</h1><article class="article-body">
+ @templ.Raw(c.CurrentArticle.HTML)
+ </article>
  }
  </section>
 }

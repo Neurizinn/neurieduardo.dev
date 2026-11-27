@@ -25,15 +25,17 @@ type Entry struct {
 	Description  string `json:"description"`
 }
 type Content struct {
-	Locale     string    `json:"locale"`
-	Intro      string    `json:"intro"`
-	About      string    `json:"about"`
-	Projects   []Project `json:"projects"`
-	Experience []Entry   `json:"experience"`
-	Stack      []Entry   `json:"stack"`
-	AI         string    `json:"ai"`
-	Education  string    `json:"education"`
-	Contact    string    `json:"contact"`
+	Locale         string    `json:"locale"`
+	Intro          string    `json:"intro"`
+	About          string    `json:"about"`
+	Projects       []Project `json:"projects"`
+	Experience     []Entry   `json:"experience"`
+	Stack          []Entry   `json:"stack"`
+	AI             string    `json:"ai"`
+	Education      string    `json:"education"`
+	Contact        string    `json:"contact"`
+	Articles       []Article `json:"-"`
+	CurrentArticle *Article  `json:"-"`
 }
 
 var slugPattern = regexp.MustCompile(`^[a-z0-9]+(?:-[a-z0-9]+)*$`)
@@ -70,6 +72,10 @@ func Load(locale string) (Content, error) {
 			return c, fmt.Errorf("invalid or duplicate project slug %q", p.Slug)
 		}
 		seen[p.Slug] = true
+	}
+	c.Articles, err = LoadArticles(locale)
+	if err != nil {
+		return c, err
 	}
 	return c, nil
 }

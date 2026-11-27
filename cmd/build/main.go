@@ -9,6 +9,7 @@ import (
 	"portfolio/internal/pages"
 	"portfolio/internal/site"
 	"strings"
+	"time"
 )
 
 func main() {
@@ -22,15 +23,22 @@ func build() error {
 	if err != nil {
 		return err
 	}
+	contents := map[string]site.Content{}
+	for _, locale := range []string{"pt", "en"} {
+		contents[locale], err = site.Load(locale)
+		if err != nil {
+			return err
+		}
+	}
+	if err := site.ValidateArticleTranslations(contents["pt"].Articles, contents["en"].Articles); err != nil {
+		return err
+	}
 	if err := os.RemoveAll("dist"); err != nil {
 		return fmt.Errorf("clear generated output: %w", err)
 	}
 	var allRoutes []string
 	for _, locale := range []string{"pt", "en"} {
-		c, err := site.Load(locale)
-		if err != nil {
-			return err
-		}
+		c := contents[locale]
 		prefix := ""
 		if locale == "en" {
 			prefix = "/en"
@@ -53,6 +61,19 @@ func build() error {
 				return err
 			}
 			allRoutes = append(allRoutes, path)
+		}
+		for i := range c.Articles {
+			c.CurrentArticle = &c.Articles[i]
+			path := prefix + "/blog/" + c.CurrentArticle.Slug + "/"
+			if err := write(path, c, "article", nil, prefix, base); err != nil {
+				return err
+			}
+			allRoutes = append(allRoutes, path)
+		}
+		if base != "" && len(c.Articles) > 0 {
+			if err := writeRSS(base, prefix, c); err != nil {
+				return err
+			}
 		}
 	}
 	b, err := os.ReadFile("assets/css/site.css")
@@ -108,6 +129,34 @@ func build() error {
 		}
 	}
 	return os.WriteFile("dist/robots.txt", []byte(robots), 0644)
+}
+func writeRSS(base, prefix string, c site.Content) error {
+	type item struct {
+		Title   string `xml:"title"`
+		Link    string `xml:"link"`
+		PubDate string `xml:"pubDate"`
+	}
+	type channel struct {
+		Title       string `xml:"title"`
+		Link        string `xml:"link"`
+		Description string `xml:"description"`
+		Items       []item `xml:"item"`
+	}
+	type rss struct {
+		XMLName xml.Name `xml:"rss"`
+		Version string   `xml:"version,attr"`
+		Channel channel  `xml:"channel"`
+	}
+	feed := rss{Version: "2.0", Channel: channel{Title: "Neuri Eduardo de Lima — Blog", Link: base + prefix + "/blog/", Description: c.Intro}}
+	for _, a := range c.Articles {
+		date, _ := time.Parse("2006-01-02", a.Date)
+		feed.Channel.Items = append(feed.Channel.Items, item{Title: a.Title, Link: base + prefix + "/blog/" + a.Slug + "/", PubDate: date.Format(time.RFC1123Z)})
+	}
+	b, err := xml.MarshalIndent(feed, "", "  ")
+	if err != nil {
+		return err
+	}
+	return os.WriteFile(filepath.Join("dist", strings.TrimPrefix(prefix, "/"), "feed.xml"), append([]byte(xml.Header), b...), 0644)
 }
 func write(route string, c site.Content, kind string, p *site.Project, prefix string, base string) error {
 	path := filepath.Join("dist", filepath.FromSlash(strings.TrimPrefix(route, "/")), "index.html")

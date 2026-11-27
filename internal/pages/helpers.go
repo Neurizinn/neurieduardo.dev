@@ -1,6 +1,6 @@
 package pages
 
-import "portfolio/internal/site"
+import "strings"
 
 func nav(locale, en, pt string) string {
 	if locale == "en" {
@@ -26,29 +26,10 @@ func htmlLocale(locale string) string {
 	}
 	return "pt-BR"
 }
-func localeRoute(locale, kind string, p *site.Project) string {
-	prefix := ""
+func equivalentRoute(route, locale string) string {
+	path := strings.TrimPrefix(route, "/en")
 	if locale == "en" {
-		prefix = "/en"
+		return "/en" + path
 	}
-	if p != nil {
-		return prefix + "/projects/" + p.Slug + "/"
-	}
-	if kind == "home" {
-		return prefix + "/"
-	}
-	return prefix + "/" + kind + "/"
-}
-func localeLink(locale, kind string, p *site.Project) string {
-	prefix := "/en"
-	if locale == "en" {
-		prefix = ""
-	}
-	if p != nil {
-		return prefix + "/projects/" + p.Slug + "/"
-	}
-	if kind == "home" {
-		return prefix + "/"
-	}
-	return prefix + "/" + kind + "/"
+	return path
 }
