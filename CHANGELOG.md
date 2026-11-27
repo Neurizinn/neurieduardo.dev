@@ -8,4 +8,5 @@
 - Added validated `SITE_URL` handling for canonical, hreflang, sitemap, and local noindex output.
 - Added CI checks for code generation, Go tests, vet, and the static asset build.
 - Added an internal link and anchor check for generated HTML.
+- Added a keyboard accessible navigation search dialog.
 - Kept publication and production SEO disabled while content and deployment remain under review.

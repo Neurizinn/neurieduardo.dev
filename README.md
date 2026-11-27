@@ -93,7 +93,7 @@ A pipeline deverá usar a CLI fixada e deploy prebuilt, sem entregar segredos ao
 - [ ] Identidade visual fiel e responsiva
 - [x] Home, projetos, experiência, stack, AI Engineering e formação
 - [ ] Páginas individuais, conteúdo bilíngue e tema
-- [ ] Blog, currículos públicos condicionais e command palette
+- [ ] Blog Markdown e currículos públicos condicionais; busca de navegação já implementada
 - [ ] SEO, sitemap, Open Graph, RSS e 404
 - [ ] Testes automatizados e QA visual
 - [x] CI local configurado e artefato Vercel prebuilt gerado; execução remota e preview pendentes
