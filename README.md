@@ -30,7 +30,7 @@ O site não necessita de banco de dados, APIs, serviços pagos ou runtime Go em 
 
 ## Identidade visual
 
-Layout editorial escuro, minimalista, grids de duas colunas, bordas discretas, mini diagramas, tipografia Geist/JetBrains Mono e espaçamento conforme a referência. Paleta: `#0B0E13` (fundo), `#11151C` (surface), `#242A33` (borda), `#EEF1F6` (texto), `#929BA9` (secundário), `#85B7FC` (destaque). Light mode e layout mobile preservam a composição.
+Layout editorial escuro, minimalista, com conteúdo amplo no desktop, hero em duas colunas, grids de projetos, bordas discretas, mini diagramas e tipografia Geist/JetBrains Mono. Entradas e interações têm movimento sutil; a preferência por movimento reduzido é respeitada. Paleta: `#0B0E13` (fundo), `#11151C` (surface), `#242A33` (borda), `#EEF1F6` (texto), `#929BA9` (secundário), `#85B7FC` (destaque). Light mode e layout mobile preservam a composição.
 
 ## Estrutura
 
@@ -75,9 +75,9 @@ Artigos aprovados podem ser adicionados em `content/pt/blog/` e `content/en/blog
 
 Downloads de currículo ficam desabilitados por padrão. Para habilitá-los após revisão do conteúdo e dos metadados, coloque `resume-approved-pt.pdf` e `resume-approved-en.pdf` em `public/` e defina `PUBLISH_RESUMES=true` no build. O build exige ambos os arquivos, cabeçalho PDF e limite de 10 MB. Não use currículos de candidatura com dados internos.
 
-`npm run qa:visual` abre o site gerado em Chromium, testa navegação por teclado, idioma, tema, 404 e overflow nas larguras 1440, 1024, 768 e 390px. As capturas ficam em `.cache/qa/`, fora do bundle e do Git. Quando a referência local está disponível, o script também captura a referência nas mesmas dimensões. Na comparação local, a estrutura, grids, cores e espaçamentos ficaram próximos; conteúdo revisado, controles adicionais e fontes locais explicam as diferenças visíveis. Não houve medição pixel a pixel.
+`npm run qa:visual` abre o site gerado em Chromium, testa navegação por teclado, idioma, tema, 404, largura útil no desktop, movimento reduzido e overflow nas larguras 1440, 1024, 768 e 390px. As capturas ficam em `.cache/qa/`, fora do bundle e do Git. Quando o arquivo de comparação local está disponível, o script também captura suas páginas nas mesmas dimensões.
 
-`npm run qa:lighthouse` grava o relatório em `.cache/qa/lighthouse.json`. Medição local em Chromium 159, Playwright 1.65.1, Lighthouse 13.6.0 e Windows: Performance 95, Accessibility 100, Best Practices 100, SEO 63. O SEO local está limitado pelo `noindex` e pelo `robots.txt` intencionais; a nota de produção depende de domínio real e novo teste.
+`npm run qa:lighthouse` grava o relatório em `.cache/qa/lighthouse.json`. Medição local em Chromium 159, Playwright 1.65.1, Lighthouse 13.6.0 e Windows: Performance 100, Accessibility 100, Best Practices 100, SEO 63. O SEO local está limitado pelo `noindex` e pelo `robots.txt` intencionais; a nota de produção depende de domínio real e novo teste.
 
 ## Conteúdo e rotas
 
@@ -97,7 +97,7 @@ O workflow de deploy ainda não foi criado porque o projeto Vercel não está vi
 ## Checklist de entrega
 
 - [x] Bootstrap Go/Templ e build estático
-- [x] Identidade visual responsiva implementada e comparada em quatro larguras; refinamento visual em preview pendente
+- [x] Identidade visual responsiva implementada e verificada em quatro larguras
 - [x] Home, projetos, experiência, stack, AI Engineering e formação
 - [x] Páginas individuais, conteúdo bilíngue e tema
 - [x] Currículos públicos condicionais, blog Markdown e busca de navegação implementados; PDFs públicos ainda não fornecidos

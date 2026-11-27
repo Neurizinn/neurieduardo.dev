@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Expanded the desktop layout, added a second hero column, and increased text and card spacing without changing the color palette.
+- Added subtle entrance and hover motion with reduced-motion support.
 - Added a static Go and Templ build with Portuguese and English routes, project pages, local styles, theme preference, and a bilingual 404 page.
 - Added typed JSON content with slug validation and basic Go checks.
 - Added a pinned local Tailwind build alongside the site's custom CSS.

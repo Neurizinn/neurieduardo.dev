@@ -35,9 +35,18 @@ try {
     }
     await page.goto(base);
     await page.evaluate(() => document.fonts.ready);
+    await page.locator('.hero-panel').evaluate(element => Promise.all(element.getAnimations().map(animation => animation.finished)));
     await page.screenshot({ path: join(output, `site-${width}.png`), fullPage: true });
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth > innerWidth);
     if (overflow) throw new Error(`Horizontal overflow at ${width}px`);
+    if (width === 1440) {
+      const contentWidth = await page.locator('#portfolio .wrap').evaluate(element => element.getBoundingClientRect().width);
+      if (contentWidth < 1200) throw new Error('Desktop layout is too narrow');
+      await page.emulateMedia({ reducedMotion: 'reduce' });
+      if (await page.locator('.hero-copy').evaluate(element => getComputedStyle(element).animationName) !== 'none') {
+        throw new Error('Reduced-motion preference is ignored');
+      }
+    }
     await page.close();
   }
   const page = await browser.newPage();
