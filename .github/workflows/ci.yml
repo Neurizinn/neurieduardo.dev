@@ -26,5 +26,14 @@ jobs:
       - run: npm run css
       - run: npm run fonts
       - run: npm run check:links
-      - run: npx playwright install --with-deps chromium
+      - name: Install Chromium
+        shell: bash
+        run: |
+          for attempt in 1 2 3; do
+            if npx playwright install --with-deps --only-shell chromium; then
+              exit 0
+            fi
+            sleep 10
+          done
+          exit 1
       - run: npm run qa:visual
