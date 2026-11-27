@@ -103,5 +103,5 @@ O workflow de deploy ainda não foi criado porque o projeto Vercel não está vi
 - [x] Currículos públicos condicionais, blog Markdown e busca de navegação implementados; PDFs públicos ainda não fornecidos
 - [x] SEO condicionado ao domínio, sitemap, Open Graph, RSS condicional e 404; validação em preview pendente
 - [x] Testes automatizados e QA visual local; SEO de produção pendente
-- [x] CI local configurado e artefato Vercel prebuilt gerado; execução remota e preview pendentes
+- [x] CI do GitHub Actions executado com sucesso e artefato Vercel prebuilt gerado localmente; preview pendente
 - [ ] Revisão de dados pessoais e corporativos, autorização de publicação
