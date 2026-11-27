@@ -55,7 +55,7 @@ portfolio/
 
 ## Desenvolvimento local
 
-Pré-requisitos atuais: Go 1.26.4 e Make opcional. O gerador usa Templ 0.3.960. O CSS atual é local; a compilação Tailwind ainda está pendente.
+Pré-requisitos atuais: Go 1.26.4, Node.js 24.15.0, npm 12.2.0 e Make opcional. O gerador usa Templ 0.3.960 e Tailwind CSS 4.3.5, com CSS próprio para o layout.
 
 ```bash
 make setup           # baixar dependências Go
@@ -68,7 +68,7 @@ make check           # geração, testes, build e vet
 make vercel-output   # empacotar dist/ no formato Build Output API
 ```
 
-No Windows sem Make: `go mod download`, `go run github.com/a-h/templ/cmd/templ@v0.3.960 generate`, `go run ./cmd/build`, `go run ./cmd/serve`, `go test ./...`, `go vet ./...` e `go run ./cmd/vercel-output`. O diretório `dist/` contém a saída local. O deploy requer SEO e domínio reais antes de publicação.
+No Windows sem Make: `go mod download`, `npm ci`, `go run github.com/a-h/templ/cmd/templ@v0.3.960 generate`, `go run ./cmd/build`, `npm run css`, `go run ./cmd/serve`, `go test ./...`, `go vet ./...` e `go run ./cmd/vercel-output`. Execute os dois comandos de build na ordem indicada; o gerador Go recria `dist/`. O deploy requer SEO e domínio reais antes de publicação.
 
 ## Conteúdo e rotas
 

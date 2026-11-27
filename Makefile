@@ -1,6 +1,7 @@
 .PHONY: setup generate fmt build dev test check vercel-output
 setup:
 	go mod download
+	npm ci
 generate:
 	go run github.com/a-h/templ/cmd/templ@v0.3.960 generate
 fmt:
@@ -8,6 +9,7 @@ fmt:
 	go fmt ./...
 build: generate
 	go run ./cmd/build
+	npm run css
 dev: build
 	go run ./cmd/serve
 test:

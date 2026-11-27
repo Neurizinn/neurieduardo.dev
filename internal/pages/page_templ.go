@@ -57,7 +57,7 @@ func Page(c site.Content, kind string, project *site.Project, prefix string) tem
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\"><meta name=\"robots\" content=\"noindex\"><link rel=\"stylesheet\" href=\"/assets/site.css\"><script defer src=\"/assets/site.js\"></script></head><body><div id=\"portfolio\"><div class=\"wrap\"><header><nav aria-label=\"Primary navigation\"><a class=\"logo\" href=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\"><meta name=\"robots\" content=\"noindex\"><link rel=\"stylesheet\" href=\"/assets/tailwind.css\"><link rel=\"stylesheet\" href=\"/assets/site.css\"><script defer src=\"/assets/site.js\"></script></head><body><div id=\"portfolio\"><div class=\"wrap\"><header><nav aria-label=\"Primary navigation\"><a class=\"logo\" href=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

@@ -17,6 +17,9 @@ func main() {
 	}
 }
 func build() error {
+	if err := os.RemoveAll("dist"); err != nil {
+		return fmt.Errorf("clear generated output: %w", err)
+	}
 	for _, locale := range []string{"pt", "en"} {
 		c, err := site.Load(locale)
 		if err != nil {
