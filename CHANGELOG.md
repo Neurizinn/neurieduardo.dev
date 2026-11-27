@@ -10,4 +10,5 @@
 - Added an internal link and anchor check for generated HTML.
 - Added a keyboard accessible navigation search dialog.
 - Added validated bilingual Markdown articles, sanitized rendering, and RSS generation when articles are published.
+- Added opt-in public resume downloads gated by approved PDF files.
 - Kept publication and production SEO disabled while content and deployment remain under review.

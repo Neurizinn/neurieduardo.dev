@@ -57,4 +57,15 @@ func TestBuildWithPublishedArticle(t *testing.T) {
 	if strings.Contains(string(html), "javascript:") || !strings.Contains(string(html), "rel=\"canonical\"") {
 		t.Fatal("article HTML is unsafe or SEO metadata is missing")
 	}
+	resume, err := os.ReadFile("dist/resume/index.html")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if strings.Contains(string(resume), "resume-approved-pt.pdf") {
+		t.Fatal("resume link shown without approval")
+	}
+	t.Setenv("PUBLISH_RESUMES", "true")
+	if err := build(); err == nil {
+		t.Fatal("missing approved PDFs accepted")
+	}
 }

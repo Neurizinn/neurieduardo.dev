@@ -4,3 +4,5 @@ dist/
 node_modules/
 .cache/
 *.pdf
+!public/resume-approved-pt.pdf
+!public/resume-approved-en.pdf

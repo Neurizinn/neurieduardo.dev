@@ -36,6 +36,7 @@ type Content struct {
 	Contact        string    `json:"contact"`
 	Articles       []Article `json:"-"`
 	CurrentArticle *Article  `json:"-"`
+	ResumeURL      string    `json:"-"`
 }
 
 var slugPattern = regexp.MustCompile(`^[a-z0-9]+(?:-[a-z0-9]+)*$`)

@@ -81,7 +81,12 @@ if kind != "home" {
  } else if kind == "about" {
  <div class="eyebrow">About me</div><h1>{ nav(c.Locale,"About","Sobre") }</h1><p class="intro">{ c.About }</p>
  } else if kind == "resume" {
- <div class="eyebrow">Resume</div><h1>{ nav(c.Locale,"Resume","Currículo") }</h1><p>{ nav(c.Locale,"A public resume has not been approved for download yet.","Ainda não há currículo público aprovado para download.") }</p>
+ <div class="eyebrow">Resume</div><h1>{ nav(c.Locale,"Resume","Currículo") }</h1>
+ if c.ResumeURL == "" {
+ <p>{ nav(c.Locale,"A public resume has not been approved for download yet.","Ainda não há currículo público aprovado para download.") }</p>
+ } else {
+ <p>{ nav(c.Locale,"Download the reviewed public resume.","Baixe o currículo público revisado.") }</p><a class="btn primary" href={ c.ResumeURL } download>{ nav(c.Locale,"Download PDF","Baixar PDF") }</a>
+ }
  } else if kind == "blog" {
  <div class="eyebrow">Blog</div><h1>Blog</h1>
  if len(c.Articles) == 0 {

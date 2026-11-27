@@ -24,10 +24,29 @@ func build() error {
 		return err
 	}
 	contents := map[string]site.Content{}
+	resumes := map[string][]byte{}
+	publishResumes := os.Getenv("PUBLISH_RESUMES")
+	if publishResumes != "" && publishResumes != "true" {
+		return fmt.Errorf("PUBLISH_RESUMES must be true or unset")
+	}
 	for _, locale := range []string{"pt", "en"} {
 		contents[locale], err = site.Load(locale)
 		if err != nil {
 			return err
+		}
+		if publishResumes == "true" {
+			name := "resume-approved-" + locale + ".pdf"
+			data, err := os.ReadFile(filepath.Join("public", name))
+			if err != nil {
+				return fmt.Errorf("approved resume %s: %w", locale, err)
+			}
+			if len(data) < 5 || string(data[:5]) != "%PDF-" || len(data) > 10<<20 {
+				return fmt.Errorf("approved resume %s is not a PDF under 10 MB", locale)
+			}
+			resumes[locale] = data
+			c := contents[locale]
+			c.ResumeURL = "/" + name
+			contents[locale] = c
 		}
 	}
 	if err := site.ValidateArticleTranslations(contents["pt"].Articles, contents["en"].Articles); err != nil {
@@ -99,6 +118,11 @@ func build() error {
 	}
 	if err = os.WriteFile("dist/favicon.svg", b, 0644); err != nil {
 		return err
+	}
+	for locale, data := range resumes {
+		if err := os.WriteFile(filepath.Join("dist", "resume-approved-"+locale+".pdf"), data, 0644); err != nil {
+			return err
+		}
 	}
 	notFound := `<!doctype html><html lang='pt-BR'><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><meta name='robots' content='noindex'><title>404 — Neuri Eduardo</title><link rel='stylesheet' href='/assets/site.css'><main class='subpage'><h1>Página não encontrada / Page not found</h1><p>Escolha um idioma / Choose a language</p><a class='btn' href='/'>Português</a> <a class='btn' href='/en/'>English</a></main></html>`
 	if err = os.WriteFile("dist/404.html", []byte(notFound), 0644); err != nil {

@@ -74,6 +74,8 @@ Sem `SITE_URL`, todas as páginas recebem `noindex` e `robots.txt` bloqueia inde
 
 Artigos aprovados podem ser adicionados em `content/pt/blog/` e `content/en/blog/` como arquivos `<slug>.md`. Cada arquivo começa com `---`, seguido de `slug:`, `title:`, `date:` (AAAA-MM-DD), `published: true` e outro `---`. Artigos publicados precisam existir nos dois idiomas com o mesmo slug e data; o HTML gerado é sanitizado. O RSS por idioma é gerado quando há artigos publicados e `SITE_URL` está configurada. Atualmente não há artigos aprovados.
 
+Downloads de currículo ficam desabilitados por padrão. Para habilitá-los após revisão do conteúdo e dos metadados, coloque `resume-approved-pt.pdf` e `resume-approved-en.pdf` em `public/` e defina `PUBLISH_RESUMES=true` no build. O build exige ambos os arquivos, cabeçalho PDF e limite de 10 MB. Não use currículos de candidatura com dados internos.
+
 ## Conteúdo e rotas
 
 Português em `/`; inglês sob `/en/`. Rotas equivalentes: `/about/`, `/experience/`, `/projects/`, `/projects/fobras-next/`, `/projects/despesa360/`, `/projects/find-my-dev/`, `/projects/teleflow/`, `/ai-engineering/`, `/stack/`, `/resume/`, `/contact/`, `/blog/`. Artigos individuais são gerados apenas a partir de Markdown publicado. A home preserva todas as seções e âncoras da referência.
@@ -95,7 +97,7 @@ A pipeline deverá usar a CLI fixada e deploy prebuilt, sem entregar segredos ao
 - [ ] Identidade visual fiel e responsiva
 - [x] Home, projetos, experiência, stack, AI Engineering e formação
 - [ ] Páginas individuais, conteúdo bilíngue e tema
-- [ ] Currículos públicos condicionais; blog Markdown e busca de navegação implementados
+- [x] Currículos públicos condicionais, blog Markdown e busca de navegação implementados; PDFs públicos ainda não fornecidos
 - [ ] SEO, sitemap, Open Graph, RSS e 404
 - [ ] Testes automatizados e QA visual
 - [x] CI local configurado e artefato Vercel prebuilt gerado; execução remota e preview pendentes
