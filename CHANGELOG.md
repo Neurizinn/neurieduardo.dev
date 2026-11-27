@@ -12,4 +12,8 @@
 - Added validated bilingual Markdown articles, sanitized rendering, and RSS generation when articles are published.
 - Added opt-in public resume downloads gated by approved PDF files.
 - Added local Geist and JetBrains Mono assets with their license files in the generated output.
+- Added Chromium screenshots and navigation checks for four viewport widths.
+- Improved keyboard labels, touch targets, and text contrast after local accessibility audit.
+- Refined the stack and AI sections against the visual reference and withheld academic details pending validation.
+- Added page-specific metadata and cleared stale Vercel output before packaging.
 - Kept publication and production SEO disabled while content and deployment remain under review.

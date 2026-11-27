@@ -26,3 +26,5 @@ jobs:
       - run: npm run css
       - run: npm run fonts
       - run: npm run check:links
+      - run: npx playwright install --with-deps chromium
+      - run: npm run qa:visual

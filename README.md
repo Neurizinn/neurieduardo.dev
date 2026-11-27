@@ -8,10 +8,10 @@ Portfólio pessoal de engenharia de software, desenvolvimento Full Stack, arquit
 |---|---|
 | Geração de páginas | Go + Templ |
 | Estilos | Tailwind CSS + CSS próprio |
-| Interatividade | HTML/CSS nativos e Alpine.js quando necessário |
+| Interatividade | HTML/CSS nativos e JavaScript local |
 | Conteúdo | JSON tipado + Markdown (Goldmark) |
-| Ícones / fontes | Lucide SVG, Geist, JetBrains Mono |
-| Qualidade | Go test, go vet, Playwright (planejado) |
+| Ícones / fontes | SVG local, Geist, JetBrains Mono |
+| Qualidade | Go test, go vet, Playwright e Lighthouse |
 | CI/CD | GitHub Actions |
 | Hospedagem | Vercel, saída estática |
 
@@ -32,17 +32,16 @@ O site não necessita de banco de dados, APIs, serviços pagos ou runtime Go em 
 
 Layout editorial escuro, minimalista, grids de duas colunas, bordas discretas, mini diagramas, tipografia Geist/JetBrains Mono e espaçamento conforme a referência. Paleta: `#0B0E13` (fundo), `#11151C` (surface), `#242A33` (borda), `#EEF1F6` (texto), `#929BA9` (secundário), `#85B7FC` (destaque). Light mode e layout mobile preservam a composição.
 
-## Estrutura prevista
+## Estrutura
 
 ```text
 portfolio/
-├── cmd/{build,serve}/
-├── internal/{site,components,layouts,pages}/
+├── cmd/{build,serve,vercel-output}/
+├── internal/{site,pages}/
 ├── content/{pt,en}/
-├── assets/{css,js,fonts}/
+├── assets/{css,js}/
 ├── public/
 ├── scripts/
-├── tests/e2e/
 ├── .github/workflows/
 ├── Makefile
 ├── go.mod
@@ -51,7 +50,7 @@ portfolio/
 └── README.md
 ```
 
-`dist/`, `.vercel/`, `node_modules/`, caches e arquivos privados não devem ser versionados. A política de geração Templ deve constar aqui após o bootstrap.
+`dist/`, `.vercel/`, `node_modules/`, `.cache/` e materiais locais em `docs/` são ignorados pelo Git. O código `*_templ.go` é gerado por Templ, versionado e verificado contra mudanças de geração no CI; não deve ser editado manualmente.
 
 ## Desenvolvimento local
 
@@ -76,29 +75,33 @@ Artigos aprovados podem ser adicionados em `content/pt/blog/` e `content/en/blog
 
 Downloads de currículo ficam desabilitados por padrão. Para habilitá-los após revisão do conteúdo e dos metadados, coloque `resume-approved-pt.pdf` e `resume-approved-en.pdf` em `public/` e defina `PUBLISH_RESUMES=true` no build. O build exige ambos os arquivos, cabeçalho PDF e limite de 10 MB. Não use currículos de candidatura com dados internos.
 
+`npm run qa:visual` abre o site gerado em Chromium, testa navegação por teclado, idioma, tema, 404 e overflow nas larguras 1440, 1024, 768 e 390px. As capturas ficam em `.cache/qa/`, fora do bundle e do Git. Quando a referência local está disponível, o script também captura a referência nas mesmas dimensões. Na comparação local, a estrutura, grids, cores e espaçamentos ficaram próximos; conteúdo revisado, controles adicionais e fontes locais explicam as diferenças visíveis. Não houve medição pixel a pixel.
+
+`npm run qa:lighthouse` grava o relatório em `.cache/qa/lighthouse.json`. Medição local em Chromium 159, Playwright 1.65.1, Lighthouse 13.6.0 e Windows: Performance 95, Accessibility 100, Best Practices 100, SEO 63. O SEO local está limitado pelo `noindex` e pelo `robots.txt` intencionais; a nota de produção depende de domínio real e novo teste.
+
 ## Conteúdo e rotas
 
 Português em `/`; inglês sob `/en/`. Rotas equivalentes: `/about/`, `/experience/`, `/projects/`, `/projects/fobras-next/`, `/projects/despesa360/`, `/projects/find-my-dev/`, `/projects/teleflow/`, `/ai-engineering/`, `/stack/`, `/resume/`, `/contact/`, `/blog/`. Artigos individuais são gerados apenas a partir de Markdown publicado. A home preserva todas as seções e âncoras da referência.
 
-Projetos: FoBras Next (CRM e ERP), Despesa360 (gestão de despesas), Find My Dev (plataforma SaaS de desenvolvedores), TeleFlow (automação Telegram). Cases devem indicar claramente o que está implementado versus planejado, com diagramas conceituais. Não incluir informações corporativas internas, indicadores quantitativos, telefone, credenciais ou imagens sem autorização. Links GitHub, certificações, downloads de currículo e domínio devem ser preenchidos somente com dados aprovados. **Currículos de candidatura com métricas privadas não devem entrar no repositório público.**
+Projetos: FoBras Next (CRM e ERP), Despesa360 (gestão de despesas), Find My Dev (plataforma SaaS de desenvolvedores), TeleFlow (automação Telegram). Os cases usam descrições e diagramas conceituais; recursos não confirmados são indicados como escopo de projeto. Dados acadêmicos específicos estão omitidos até validação. Links GitHub, certificações, downloads de currículo e domínio dependem de dados aprovados. **Currículos de candidatura com métricas privadas não devem entrar no repositório público.**
 
 ## Publicação planejada
 
 1. Criar/vincular o projeto Vercel e configurar `SITE_URL` com o domínio real.
 2. Configurar GitHub Actions Secrets `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`; usar variável `SITE_URL` para o domínio.
 3. Executar CI e validar `dist/`. Empacotar os arquivos em `.vercel/output/static/` e criar a configuração v3 de Build Output API.
-4. Após autorização, executar o workflow manual de deploy. Validar rotas e página 404 na URL de publicação. Evitar deploy duplo se houver integração Git automática.
+4. Preparar o workflow manual de deploy quando o projeto estiver vinculado. Validar rotas e página 404 em preview antes de publicar. Evitar deploy duplo se houver integração Git automática.
 
-A pipeline deverá usar a CLI fixada e deploy prebuilt, sem entregar segredos ao navegador. Nenhum deploy foi realizado nesta fase. Veja [Build Output API](https://vercel.com/docs/build-output-api), [deploy prebuilt](https://vercel.com/docs/cli/deploy), [Hobby](https://vercel.com/docs/plans/hobby) e [renderização estática Templ](https://templ.guide/static-rendering/generating-static-html-files-with-templ/).
+O workflow de deploy ainda não foi criado porque o projeto Vercel não está vinculado. O empacotamento local gera `.vercel/output/static/` e `config.json` v3. Nenhum deploy foi realizado. Veja [Build Output API](https://vercel.com/docs/build-output-api), [deploy prebuilt](https://vercel.com/docs/cli/deploy), [Hobby](https://vercel.com/docs/plans/hobby) e [renderização estática Templ](https://templ.guide/static-rendering/generating-static-html-files-with-templ/).
 
 ## Checklist de entrega
 
 - [x] Bootstrap Go/Templ e build estático
-- [ ] Identidade visual fiel e responsiva
+- [x] Identidade visual responsiva implementada e comparada em quatro larguras; refinamento visual em preview pendente
 - [x] Home, projetos, experiência, stack, AI Engineering e formação
-- [ ] Páginas individuais, conteúdo bilíngue e tema
+- [x] Páginas individuais, conteúdo bilíngue e tema
 - [x] Currículos públicos condicionais, blog Markdown e busca de navegação implementados; PDFs públicos ainda não fornecidos
-- [ ] SEO, sitemap, Open Graph, RSS e 404
-- [ ] Testes automatizados e QA visual
+- [x] SEO condicionado ao domínio, sitemap, Open Graph, RSS condicional e 404; validação em preview pendente
+- [x] Testes automatizados e QA visual local; SEO de produção pendente
 - [x] CI local configurado e artefato Vercel prebuilt gerado; execução remota e preview pendentes
 - [ ] Revisão de dados pessoais e corporativos, autorização de publicação
