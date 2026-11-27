@@ -21,8 +21,23 @@ func otherLocale(locale string) string {
 	return "en"
 }
 func htmlLocale(locale string) string {
- if locale == "en" { return "en-US" }
- return "pt-BR"
+	if locale == "en" {
+		return "en-US"
+	}
+	return "pt-BR"
+}
+func localeRoute(locale, kind string, p *site.Project) string {
+	prefix := ""
+	if locale == "en" {
+		prefix = "/en"
+	}
+	if p != nil {
+		return prefix + "/projects/" + p.Slug + "/"
+	}
+	if kind == "home" {
+		return prefix + "/"
+	}
+	return prefix + "/" + kind + "/"
 }
 func localeLink(locale, kind string, p *site.Project) string {
 	prefix := "/en"

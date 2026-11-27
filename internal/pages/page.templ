@@ -2,9 +2,15 @@ package pages
 
 import "portfolio/internal/site"
 
-templ Page(c site.Content, kind string, project *site.Project, prefix string) {
+templ Page(c site.Content, kind string, project *site.Project, prefix string, base string, route string) {
 <!doctype html>
-<html lang={ htmlLocale(c.Locale) }><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="color-scheme" content="dark light"/><title>Neuri Eduardo de Lima — Portfolio</title><meta name="description" content={ c.Intro }/><meta name="robots" content="noindex"/><link rel="stylesheet" href="/assets/tailwind.css"/><link rel="stylesheet" href="/assets/site.css"/><script defer src="/assets/site.js"></script></head>
+<html lang={ htmlLocale(c.Locale) }><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="color-scheme" content="dark light"/><title>Neuri Eduardo de Lima — Portfolio</title><meta name="description" content={ c.Intro }/>
+if base == "" {
+<meta name="robots" content="noindex"/>
+} else {
+<link rel="canonical" href={ base + route }/><link rel="alternate" hreflang="pt-BR" href={ base + localeRoute("pt",kind,project) }/><link rel="alternate" hreflang="en-US" href={ base + localeRoute("en",kind,project) }/><meta property="og:type" content="website"/><meta property="og:title" content="Neuri Eduardo de Lima — Portfolio"/><meta property="og:description" content={ c.Intro }/><meta property="og:url" content={ base + route }/><meta name="twitter:card" content="summary"/>
+}
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"/><link rel="stylesheet" href="/assets/tailwind.css"/><link rel="stylesheet" href="/assets/site.css"/><script defer src="/assets/site.js"></script></head>
 <body><div id="portfolio"><div class="wrap">
 <header><nav aria-label="Primary navigation"><a class="logo" href={ prefix + "/" }><span>&lt;</span>neuri<span>/&gt;</span></a><div class="links"><a href={ prefix + "/#about-n" }>{ nav(c.Locale,"About","Sobre") }</a><a href={ prefix + "/#projects-n" }>{ nav(c.Locale,"Projects","Projetos") }</a><a href={ prefix + "/#experience-n" }>{ nav(c.Locale,"Experience","Experiência") }</a><a href={ prefix + "/#contact-n" }>{ nav(c.Locale,"Contact","Contato") }</a><a href={ localeLink(c.Locale,kind,project) } lang={ otherLocale(c.Locale) }>{ otherLocale(c.Locale) }</a><button type="button" id="theme" aria-label="Toggle theme">◐</button></div></nav></header>
 <main>

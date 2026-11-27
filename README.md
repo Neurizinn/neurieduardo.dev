@@ -64,11 +64,13 @@ make fmt             # formatar código
 make build           # gerar dist/
 make dev             # gerar e servir dist/ em localhost:8080; sem watch
 make test            # testes Go
-make check           # geração, testes, build e vet
+make check           # geração, testes, build, vet e links internos
 make vercel-output   # empacotar dist/ no formato Build Output API
 ```
 
-No Windows sem Make: `go mod download`, `npm ci`, `go run github.com/a-h/templ/cmd/templ@v0.3.960 generate`, `go run ./cmd/build`, `npm run css`, `go run ./cmd/serve`, `go test ./...`, `go vet ./...` e `go run ./cmd/vercel-output`. Execute os dois comandos de build na ordem indicada; o gerador Go recria `dist/`. O deploy requer SEO e domínio reais antes de publicação.
+No Windows sem Make: `go mod download`, `npm ci`, `go run github.com/a-h/templ/cmd/templ@v0.3.960 generate`, `go run ./cmd/build`, `npm run css`, `npm run check:links`, `go run ./cmd/serve`, `go test ./...`, `go vet ./...` e `go run ./cmd/vercel-output`. Execute os dois comandos de build na ordem indicada; o gerador Go recria `dist/`. O deploy requer SEO e domínio reais antes de publicação.
+
+Sem `SITE_URL`, todas as páginas recebem `noindex` e `robots.txt` bloqueia indexação. Com uma origem HTTPS válida em `SITE_URL`, o build gera canonical, hreflang, Open Graph básico e sitemap. A configuração do domínio e a revisão do conteúdo devem ocorrer antes de qualquer deploy.
 
 ## Conteúdo e rotas
 
@@ -87,12 +89,12 @@ A pipeline deverá usar a CLI fixada e deploy prebuilt, sem entregar segredos ao
 
 ## Checklist de entrega
 
-- [ ] Bootstrap Go/Templ e build estático
+- [x] Bootstrap Go/Templ e build estático
 - [ ] Identidade visual fiel e responsiva
-- [ ] Home, projetos, experiência, stack, AI Engineering e formação
+- [x] Home, projetos, experiência, stack, AI Engineering e formação
 - [ ] Páginas individuais, conteúdo bilíngue e tema
 - [ ] Blog, currículos públicos condicionais e command palette
 - [ ] SEO, sitemap, Open Graph, RSS e 404
 - [ ] Testes automatizados e QA visual
-- [ ] CI e artefato Vercel prebuilt
+- [x] CI local configurado e artefato Vercel prebuilt gerado; execução remota e preview pendentes
 - [ ] Revisão de dados pessoais e corporativos, autorização de publicação

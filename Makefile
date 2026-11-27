@@ -16,5 +16,6 @@ test:
 	go test ./...
 check: generate test build
 	go vet ./...
+	npm run check:links
 vercel-output: build
 	go run ./cmd/vercel-output

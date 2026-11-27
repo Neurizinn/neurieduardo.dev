@@ -1,7 +1,8 @@
 {
   "private": true,
   "scripts": {
-    "css": "tailwindcss -i ./assets/css/tailwind.css -o ./dist/assets/tailwind.css --minify"
+    "css": "tailwindcss -i ./assets/css/tailwind.css -o ./dist/assets/tailwind.css --minify",
+    "check:links": "node ./scripts/check-links.mjs"
   },
   "devDependencies": {
     "@tailwindcss/cli": "4.3.5",
