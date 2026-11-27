@@ -1,0 +1,1 @@
+(()=>{const root=document.documentElement;try{const saved=localStorage.getItem('theme');if(saved==='light'||saved==='dark')root.dataset.theme=saved}catch{}const button=document.getElementById('theme');button?.addEventListener('click',()=>{const next=root.dataset.theme==='light'?'dark':'light';root.dataset.theme=next;try{localStorage.setItem('theme',next)}catch{}})})();

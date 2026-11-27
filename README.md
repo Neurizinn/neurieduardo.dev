@@ -53,22 +53,22 @@ portfolio/
 
 `dist/`, `.vercel/`, `node_modules/`, caches e arquivos privados não devem ser versionados. A política de geração Templ deve constar aqui após o bootstrap.
 
-## Desenvolvimento local (contratos planejados)
+## Desenvolvimento local
 
-Pré-requisitos: Git, Go, Node.js/npm para ferramentas de build e teste, Make opcional. Fixar e registrar versões reais no primeiro commit de implementação. Para Windows, documentar comandos equivalentes sem Make após criar os scripts.
+Pré-requisitos atuais: Go 1.26.4 e Make opcional. O gerador usa Templ 0.3.960. O CSS atual é local; a compilação Tailwind ainda está pendente.
 
 ```bash
-make setup           # instalar dependências fixadas
+make setup           # baixar dependências Go
 make generate        # gerar código Go a partir de Templ
 make fmt             # formatar código
 make build           # gerar dist/
-make dev             # servir localmente a saída estática
-make test            # testes automatizados
-make check           # formatação, vet, testes, build e checks de links
+make dev             # gerar e servir dist/ em localhost:8080; sem watch
+make test            # testes Go
+make check           # geração, testes, build e vet
 make vercel-output   # empacotar dist/ no formato Build Output API
 ```
 
-`SITE_URL` deve apontar para o domínio público real antes de publicar; não inserir um domínio inventado no sitemap. O endereço local e a porta serão informados pela implementação. Não são necessárias chaves para o build local.
+No Windows sem Make: `go mod download`, `go run github.com/a-h/templ/cmd/templ@v0.3.960 generate`, `go run ./cmd/build`, `go run ./cmd/serve`, `go test ./...`, `go vet ./...` e `go run ./cmd/vercel-output`. O diretório `dist/` contém a saída local. O deploy requer SEO e domínio reais antes de publicação.
 
 ## Conteúdo e rotas
 
