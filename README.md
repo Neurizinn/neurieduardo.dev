@@ -55,7 +55,7 @@ portfolio/
 
 ## Desenvolvimento local
 
-Pré-requisitos atuais: Go 1.26.4, Node.js 24.15.0, npm 12.2.0 e Make opcional. O gerador usa Templ 0.3.960 e Tailwind CSS 4.3.5, com CSS próprio para o layout.
+Pré-requisitos atuais: Go 1.26.4, Node.js 24.15.0, npm 12.2.0 e Make opcional. O gerador usa Templ 0.3.960 e Tailwind CSS 4.3.5, com CSS próprio para o layout. Geist e JetBrains Mono são copiados localmente dos pacotes fixados no lockfile, junto com suas licenças.
 
 ```bash
 make setup           # baixar dependências Go
@@ -68,7 +68,7 @@ make check           # geração, testes, build, vet e links internos
 make vercel-output   # empacotar dist/ no formato Build Output API
 ```
 
-No Windows sem Make: `go mod download`, `npm ci`, `go run github.com/a-h/templ/cmd/templ@v0.3.960 generate`, `go run ./cmd/build`, `npm run css`, `npm run check:links`, `go run ./cmd/serve`, `go test ./...`, `go vet ./...` e `go run ./cmd/vercel-output`. Execute os dois comandos de build na ordem indicada; o gerador Go recria `dist/`. O deploy requer SEO e domínio reais antes de publicação.
+No Windows sem Make: `go mod download`, `npm ci`, `go run github.com/a-h/templ/cmd/templ@v0.3.960 generate`, `go run ./cmd/build`, `npm run css`, `npm run fonts`, `npm run check:links`, `go run ./cmd/serve`, `go test ./...`, `go vet ./...` e `go run ./cmd/vercel-output`. Execute os comandos de build na ordem indicada; o gerador Go recria `dist/`. O deploy requer SEO e domínio reais antes de publicação.
 
 Sem `SITE_URL`, todas as páginas recebem `noindex` e `robots.txt` bloqueia indexação. Com uma origem HTTPS válida em `SITE_URL`, o build gera canonical, hreflang, Open Graph básico e sitemap. A configuração do domínio e a revisão do conteúdo devem ocorrer antes de qualquer deploy.
 

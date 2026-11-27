@@ -105,6 +105,13 @@ func build() error {
 	if err = os.WriteFile("dist/assets/site.css", b, 0644); err != nil {
 		return err
 	}
+	b, err = os.ReadFile("assets/css/fonts.css")
+	if err != nil {
+		return err
+	}
+	if err = os.WriteFile("dist/assets/fonts.css", b, 0644); err != nil {
+		return err
+	}
 	b, err = os.ReadFile("assets/js/site.js")
 	if err != nil {
 		return err

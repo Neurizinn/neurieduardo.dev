@@ -14,7 +14,7 @@ func TestBuildWithPublishedArticle(t *testing.T) {
 		t.Fatal(err)
 	}
 	repo := filepath.Clean(filepath.Join(source, "../.."))
-	for _, name := range []string{"content/pt/site.json", "content/en/site.json", "assets/css/site.css", "assets/js/site.js", "public/favicon.svg"} {
+	for _, name := range []string{"content/pt/site.json", "content/en/site.json", "assets/css/site.css", "assets/css/fonts.css", "assets/js/site.js", "public/favicon.svg"} {
 		data, err := os.ReadFile(filepath.Join(repo, filepath.FromSlash(name)))
 		if err != nil {
 			t.Fatal(err)

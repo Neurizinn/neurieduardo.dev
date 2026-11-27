@@ -10,7 +10,7 @@ if base == "" {
 } else {
 <link rel="canonical" href={ base + route }/><link rel="alternate" hreflang="pt-BR" href={ base + equivalentRoute(route,"pt") }/><link rel="alternate" hreflang="en-US" href={ base + equivalentRoute(route,"en") }/><meta property="og:type" content="website"/><meta property="og:title" content="Neuri Eduardo de Lima — Portfolio"/><meta property="og:description" content={ c.Intro }/><meta property="og:url" content={ base + route }/><meta name="twitter:card" content="summary"/>
 }
-<link rel="icon" href="/favicon.svg" type="image/svg+xml"/><link rel="stylesheet" href="/assets/tailwind.css"/><link rel="stylesheet" href="/assets/site.css"/><script defer src="/assets/site.js"></script>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"/><link rel="stylesheet" href="/assets/tailwind.css"/><link rel="stylesheet" href="/assets/fonts.css"/><link rel="stylesheet" href="/assets/site.css"/><script defer src="/assets/site.js"></script>
 if base != "" && len(c.Articles) > 0 {
 <link rel="alternate" type="application/rss+xml" title="Blog RSS" href={ base + prefix + "/feed.xml" }/>
 }

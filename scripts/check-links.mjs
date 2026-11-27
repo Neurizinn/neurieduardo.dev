@@ -31,6 +31,12 @@ for (const file of files) {
     }
   }
 }
+for (const name of ['site.css', 'fonts.css', 'tailwind.css']) {
+  const css = readFileSync(join(root, 'assets', name), 'utf8');
+  for (const [, asset] of css.matchAll(/url\(['"]?(\/assets\/[^)'" ]+)['"]?\)/g)) {
+    if (!existsSync(resolve(root, '.' + asset))) errors.push(`${name}: missing ${asset}`);
+  }
+}
 if (errors.length) {
   console.error(errors.join('\n'));
   process.exitCode = 1;

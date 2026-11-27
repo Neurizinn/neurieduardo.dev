@@ -137,7 +137,7 @@ func Page(c site.Content, kind string, project *site.Project, prefix string, bas
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "<link rel=\"icon\" href=\"/favicon.svg\" type=\"image/svg+xml\"><link rel=\"stylesheet\" href=\"/assets/tailwind.css\"><link rel=\"stylesheet\" href=\"/assets/site.css\"><script defer src=\"/assets/site.js\"></script>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "<link rel=\"icon\" href=\"/favicon.svg\" type=\"image/svg+xml\"><link rel=\"stylesheet\" href=\"/assets/tailwind.css\"><link rel=\"stylesheet\" href=\"/assets/fonts.css\"><link rel=\"stylesheet\" href=\"/assets/site.css\"><script defer src=\"/assets/site.js\"></script>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

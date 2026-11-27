@@ -10,6 +10,7 @@ fmt:
 build: generate
 	go run ./cmd/build
 	npm run css
+	npm run fonts
 dev: build
 	go run ./cmd/serve
 test:

@@ -11,4 +11,5 @@
 - Added a keyboard accessible navigation search dialog.
 - Added validated bilingual Markdown articles, sanitized rendering, and RSS generation when articles are published.
 - Added opt-in public resume downloads gated by approved PDF files.
+- Added local Geist and JetBrains Mono assets with their license files in the generated output.
 - Kept publication and production SEO disabled while content and deployment remain under review.
