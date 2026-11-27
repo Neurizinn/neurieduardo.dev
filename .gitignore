@@ -1,0 +1,6 @@
+docs/
+dist/
+.vercel/
+node_modules/
+.cache/
+*.pdf
